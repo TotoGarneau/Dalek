@@ -17,18 +17,24 @@ class ControlleurJeu :
                 cellule.append(self.grille.getCellule[ligne][colone])
         return grille
 
-    def _setPosDalek(self, grille) :
+    def _initPosDalek(self, grille) :
         nbDalek = self.niveau * 5
-        for i in range(nbDalek) :
+        nbDalekSet = 0
+        while nbDalekSet != nbDalek :
             y = randbelow(6)
-            x = randbelow(8)
-            
+            x = randbelow(8)         
             if grille[y][x].getEtat() == "" :
                 grille[y][x].setEtat("D")
-            else :
-                i -= 1
+                nbDalekSet += 1
 
-
+    def _initPosDoc(grille) :
+        docSet = False
+        while docSet == False :
+            y = randbelow(6)
+            x = randbelow(8)
+            if grille[y][x].getEtat() == "" :
+                grille[y][x].setEtat("W")
+                docSet = True
 
     def verifToucheValide(input) :
         if len(input) < 2 :
@@ -40,18 +46,3 @@ class ControlleurJeu :
         else :
             return False
         
-
-
-        
-
-
-
-if __name__ == "__main__" :
-    grille = [] 
-    for ligne in range(0, 6) :
-        cellule = []
-        grille.append(cellule)
-        for colone in range(0, 8) :
-            cellule.append(str(colone))
-    
-    ControlleurJeu.verifDeplacement()
