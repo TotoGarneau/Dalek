@@ -34,22 +34,33 @@ class VueJeu :
         VueJeu.printBottom()
 
     def showGameOver() :
-        topBoite = "|"
+        topBoite = "\t\t|"
         for x in range(0, 13) :
             topBoite += "\u203e"  # char upperscore
         topBoite += "|"
         print(topBoite)
-        print("|  GAME OVER  |")
-        print("|_____________|")
+        print("\t\t|  GAME OVER  |")
+        print("\t\t|_____________|")
 
-    def showNextLevel() :
-        topBoite = "|"
-        for x in range(0, 14) :
+    def showNextLevel(niveau) :
+        if niveau < 10 :
+            niveau = "0" + str(niveau)
+            
+        topBoite = "\t\t|"
+        for x in range(0, 16) :
             topBoite += "\u203e"  # char upperscore
         topBoite += "|"
         print(topBoite)
-        print("|  NEXT LEVEL  |")
-        print("|______________|")
+        print("\t\t|  NEXT LEVEL " + str(niveau) +" |")
+        print("\t\t|________________|")
+
+    def show(niveau, grille, nbZapper) :
+        print("\tNiveau : 0" + str(niveau) + "\t Zapper : " + str(nbZapper))
+        print()
+        VueJeu.printDamier(grille)
+        print()
+        print("\tChoisissez un deplacement...")
+
 
 
 # POUR TEST
@@ -60,5 +71,4 @@ if __name__ == "__main__" :
         grille.append(cellule)
         for colone in range(0, 8) :
             cellule.append(str(colone))
-    VueJeu.showGameOver()
-    VueJeu.showNextLevel()
+    VueJeu.show(3, grille, 4)
