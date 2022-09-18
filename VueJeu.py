@@ -60,15 +60,3 @@ class VueJeu :
         VueJeu.printDamier(grille)
         print()
         print("\tChoisissez un deplacement...")
-
-
-
-# POUR TEST
-if __name__ == "__main__" :
-    grille = [] 
-    for ligne in range(0, 6) :
-        cellule = []
-        grille.append(cellule)
-        for colone in range(0, 8) :
-            cellule.append(str(colone))
-    VueJeu.show(3, grille, 4)
