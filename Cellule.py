@@ -1,5 +1,5 @@
 class Cellule:
-    def __init__(self)
+    def __init__(self) :
         # Case vide : ""
         # Case occupee par Doc : "W"
         # Case occupee par Feraille : "X"
@@ -22,14 +22,14 @@ class Cellule:
     def cellDalek() :
         return "D"
 
-    def setEtat(self, occupant)         #Affectation du nouvel occupant d'une cellule
+    def setEtat(self, occupant) :         #Affectation du nouvel occupant d'une cellule
     if occupant == "" :
         self.etat = Cellule.cellNeutre()
-    elif occupant == "W"
+    elif occupant == "W" :
         self.etat = Cellule.cellDoc()
-    elif occupant == "X"
+    elif occupant == "X" :
         self.etat = Cellule.cellFeraille()
-    elif occupant == "D"
+    elif occupant == "D" :
         self.etat = Cellule.cellDalek()
 
     def getEtat(self) :
@@ -44,7 +44,7 @@ class Grille:
         self.cellules = [] 
 
     for x in range(0,6) :       #Creation de la grille 6x8
-        for y in ranger(0,8) :
+        for y in range(0,8) :
             self.cellule.append(Cellule())
 
     def getCellule(self, i) :
