@@ -57,5 +57,6 @@ class ControlleurJeu :
         posDoc = self._getPosDoc()
         ligDoc = posDoc[0]
         colDoc = posDoc[1]
+
         if self.verifDeplacementValide(input) :
-            if grille
+            if ligDoc > 0 and ligDoc < 5 and colDoc > 0 and colDoc < 7 :
