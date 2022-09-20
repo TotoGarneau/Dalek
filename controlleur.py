@@ -19,7 +19,7 @@ class ControlleurJeu :
 
     def _initPosDalek(self, grille) :
         nbDalek = self.niveau * 5
-        nbDalekSet = 0 
+        nbDalekSet = 0
         while nbDalekSet != nbDalek :
             y = randbelow(6)
             x = randbelow(8)         
@@ -35,6 +35,12 @@ class ControlleurJeu :
             if grille[y][x].getEtat() == "" :
                 grille[y][x].setEtat("W")
                 docSet = True
+    
+    def _getPosDoc(grille) :
+        for lig in range(0, 6) :
+            for col in range(0, 8) :
+                if grille[lig][col] == "W" :
+                    return lig, col
 
 
     def verifToucheValide(input) :
@@ -47,3 +53,9 @@ class ControlleurJeu :
         else :
             return False
         
+    def verifDeplacementValide(self, input, grille) :
+        posDoc = self._getPosDoc()
+        ligDoc = posDoc[0]
+        colDoc = posDoc[1]
+        if self.verifDeplacementValide(input) :
+            if grille
