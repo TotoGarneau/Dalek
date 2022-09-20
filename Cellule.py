@@ -41,14 +41,16 @@ class Cellule:
 
 class Grille:
     def __init__(self) :
-        self.cellules = [] 
+        self.grille = []
 
-    for x in range(0,6) :       #Creation de la grille 6x8
-        for y in range(0,8) :
-            self.cellule.append(Cellule())
+        for ligne in range(0, 6) :
+            cellule = []
+            self.grille.append(cellule)
+            for colone in range(0, 8) :
+                cellule.append(Cellule())
 
-    def getCellule(self, i) :
-        return self.cellules[i].getEtat()
+    def getCellule(self, ligne, colone) :
+        return self.grille[ligne][colone].getEtat()
 
-    def setCellule(self, i, occupant) :
-        self.cellules[i].setEtat(occupant)
+    def setCellule(self, ligne, colone, occupant) :
+        self.grille[ligne][colone].setEtat(occupant)
