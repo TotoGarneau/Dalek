@@ -36,6 +36,7 @@ class ControlleurJeu :
                 grille[y][x].setEtat("W")
                 docSet = True
 
+
     def verifToucheValide(input) :
         if len(input) < 2 :
             verif = re.search("[123456789zt]", input)
