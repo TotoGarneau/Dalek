@@ -19,7 +19,7 @@ class ControlleurJeu :
 
     def _initPosDalek(self, grille) :
         nbDalek = self.niveau * 5
-        nbDalekSet = 0
+        nbDalekSet = 0 
         while nbDalekSet != nbDalek :
             y = randbelow(6)
             x = randbelow(8)         
