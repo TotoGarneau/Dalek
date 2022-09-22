@@ -22,9 +22,19 @@ class HighScoreController:
     def calculScore(self, score): 
         if not exists('fichierHighScore.csv'):
             HighScoreController.ecrireScore(self, score)
-        if exists('fichierHighScore.csv'):
-            liste = []
-            with open('fichierHighScore.csv', 'r') as csv_file:
+            print(score)
+        #elif exists('fichierHighScore.csv'):
+        #    liste = []
+        #    with open('fichierHighScore.csv', 'r') as csv_file:
+        #        for line in csv_file.readlines():
+        #            liste.append(line)
+        #       if len(liste) < 10:
+        #           HighScoreController.ecrireScore(self, score)
+        #        else:
+        #            for i in liste :
+        #                if score > liste[i]:
+        #                     HighScoreController.ecrireScore(self, score)
+
 
     def ecrireScore(self, score):  #score du joueur passé en paramètre 
         score = [score]
