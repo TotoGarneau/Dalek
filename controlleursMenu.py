@@ -19,29 +19,31 @@ class ControllerMenu:
 
  
 class HighScoreController:
-    def calculScore(self, score): 
-        if not exists('fichierHighScore.csv'):
+    def calculClassement(self, score): 
+        if not exists('fichierHighScore.csv'):  
             HighScoreController.ecrireScore(self, score)
-            print(score)
-        #elif exists('fichierHighScore.csv'):
-        #    liste = []
-        #    with open('fichierHighScore.csv', 'r') as csv_file:
-        #        for line in csv_file.readlines():
-        #            liste.append(line)
-        #       if len(liste) < 10:
-        #           HighScoreController.ecrireScore(self, score)
-        #        else:
-        #            for i in liste :
-        #                if score > liste[i]:
-        #                     HighScoreController.ecrireScore(self, score)
+        else:
+            liste = []
+            with open('fichierHighScore.csv', 'r') as csv_file:
+                for line in csv_file.readlines():
+                    liste.append(line)
+                for i in liste :  
+                    if (int(i) <= 10 and score > liste[int(i)]): 
+                        HighScoreController.ecrireScore(self, score)
 
 
     def ecrireScore(self, score):  #score du joueur passé en paramètre 
         score = [score]
-        with open('fichierHighScore.csv', 'a', newline="") as csv_file:  #Ouvrir le fichier en format "écriture"
+        with open('fichierHighScore.csv', 'a', newline="") as csv_file:  #Ouvrir le fichier en "append" pour ajouter donnée
             writer = csv.writer(csv_file)               #Activer la fonction pour écrire 
             writer.writerows(map(lambda x: [x], score)) #Écrire le score 
 
+    def genererListeClassement(self):   #Trier les scores du plus grand au plus petit 
+        max = 0 
+        liste = []
+        with open('fichierHighScore.csv', 'r') as csv_file:
+                 for line in csv_file.readlines():
+                  
 
 
 
@@ -54,21 +56,21 @@ class JeuController:
             print ("\n" * 13)
             input("appuyez sur une touche pour continuer")
             score = 100; #Utiliser le score final du joueur et le passer en paramètre pour calcul high score
-            HighScoreController.calculScore(self, score)
+            HighScoreController.calculClassement(self, score)
             VueHighScore.afficherClassement()
         elif choix == 2: 
             print("Niveau Intermédiaire\n")
             print ("\n" * 13)
             input("appuyez sur une touche pour continuer")
             score = 200; #Utiliser le score final du joueur et le passer en paramètre pour calcul high score
-            HighScoreController.calculScore(self, score)
+            HighScoreController.calculClassement(self, score)
             VueHighScore.afficherClassement()
         elif choix == 3: 
             print("Niveau Difficile\n")
             print ("\n" * 13)
             input("appuyez sur une touche pour continuer")
             score = 300; #Utiliser le score final du joueur et le passer en paramètre pour calcul high score
-            HighScoreController.calculScore(self,score)
+            HighScoreController.calculClassement(self,score)
             VueHighScore.afficherClassement()
 
         
