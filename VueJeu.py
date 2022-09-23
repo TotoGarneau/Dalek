@@ -33,6 +33,9 @@ class VueJeu :
         VueJeu.printLigneDamier(5, cellules)
         VueJeu.printBottom()
 
+    def errDeplacement() :
+        print("Le deplacement est impossible, veuillez en essayer un autre.")
+
     def showGameOver() :
         topBoite = "\t\t|"
         for x in range(0, 13) :
