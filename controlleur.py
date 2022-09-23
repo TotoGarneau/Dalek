@@ -23,8 +23,8 @@ class ControlleurJeu :
         while nbDalekSet != nbDalek :
             y = randbelow(6)
             x = randbelow(8)         
-            if grille[y][x].getEtat() == "" :
-                grille[y][x].setEtat("D")
+            if grille.getCellule(y, x) == "" :
+                grille.setCellule(y, x, "D")
                 nbDalekSet += 1
 
     # deplacement auto des dalek vers le doc
@@ -89,7 +89,6 @@ class ControlleurJeu :
         elif self.grille.getCellule(lig, col) == "W" :
             return -1
 
-
     def _initPosDoc(grille) :
         docSet = False
         while docSet == False :
@@ -107,6 +106,7 @@ class ControlleurJeu :
 
     def _verifToucheValide(input) :
         if len(input) < 2 :
+            input = str(input)
             verif = re.search("[0123456789ztZT]", input)
             if verif :
                 return True
@@ -157,8 +157,8 @@ class ControlleurJeu :
                     colTo += 1
                 
             if ligTo > 0 and ligTo < 5 and colTo > 0 and colTo < 7 :
-                if self.grille[ligTo][colTo] != "X" :
-                    if self.grille[ligTo][colTo] == "D" :
+                if self.grille.getCellule(ligTo, colTo) != "X" :
+                    if self.grille.getCellule(ligTo, colTo) == "D" :
                         return -1 # code defaite
                     else :
                         self.grille.setCellule(ligTo, colTo, "W")
@@ -171,16 +171,13 @@ class ControlleurJeu :
         nbDalek = 0
         for y in range(0, 6) :
             for x in range(0, 8) :
-                if self.grille[y][x].getCellule == "D" :
+                if self.grille.getCellule(y, x) == "D" :
                     nbDalek += 1
         
         if nbDalek == 0 :
             return True
         else :
             return False
-
-        
-
 
     def niveauSuivant(self) :
         self.niveau += 1
