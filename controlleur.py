@@ -104,12 +104,17 @@ class ControlleurJeu :
                 VueJeu.errDeplacement()
                 return 0 # code erreur, rejouer tour
 
+    def verifVictoire(self) :
+        nbDalek = 0
+        for y in range(0, 6) :
+            for x in range(0, 8) :
+                if self.grille[y][x].getCellule == "D" :
+                    nbDalek += 1
+        
+        if nbDalek == 0 :
+            return True
+        else :
+            return False
+
     def niveauSuivant(self) :
         self.niveau += 1
-
-
-
-        
-
-
-         
