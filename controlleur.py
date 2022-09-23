@@ -27,6 +27,46 @@ class ControlleurJeu :
                 grille[y][x].setEtat("D")
                 nbDalekSet += 1
 
+    # deplacement auto des dalek vers le doc
+    def _deplacementDalek(self) :
+        posDoc = self._getPosDoc()
+        ligDoc = posDoc[0]
+        colDoc = posDoc[1]
+        for lig in range(0, 6) :
+            for col in range(0, 8) :
+                ligTo = lig
+                colTo = col
+                if self.grille[lig][col] == "D" :
+                    # reset case d'origine
+                    self.grille[lig][col].setEtat("")
+                    # Si dalek en bas a gauche 
+                    if ligDoc > lig and colDoc > col :
+                        self.grille[ligTo + 1][colTo + 1].setEtat("D")
+                    # si dalek en bas a droite
+                    elif ligDoc > lig and colDoc < col :
+                        self.grille[ligTo + 1][colTo - 1].setEtat("D")
+                    # si dalek en haut a gauche
+                    elif ligDoc < lig and colDoc < col :
+                        self.grille[ligTo - 1][colTo - 1].setEtat("D")
+                    # si dalek en haut a droite
+                    elif ligDoc < lig and colDoc > col :
+                        self.grille[ligTo - 1][colTo + 1].setEtat("D")
+                    # si dalek sur la meme ligne et a gauche
+                    elif ligDoc == lig and colDoc > col :
+                        self.grille[ligTo][colTo + 1].setEtat("D")
+                    # si dalek sur la meme ligne et a droite
+                    elif ligDoc == lig and colDoc < col :
+                        self.grille[ligTo][colTo - 1].setEtat("D")
+                    # si dalek sur la meme colone et au dessus
+                    elif ligDoc > lig and colDoc == col :
+                        self.grille[ligTo + 1][colTo].setEtat("D")
+                    # si dalek sur la meme colone et en dessous
+                    elif ligDoc < lig and colDoc == col :
+                        self.grille[ligTo - 1][colTo].setEtat("D")
+                
+                    
+
+
     def _initPosDoc(grille) :
         docSet = False
         while docSet == False :
@@ -36,13 +76,13 @@ class ControlleurJeu :
                 grille[y][x].setEtat("W")
                 docSet = True
     
-    def _getPosDoc(grille) :
+    def _getPosDoc(self) :
         for lig in range(0, 6) :
             for col in range(0, 8) :
-                if grille[lig][col] == "W" :
+                if self.grille[lig][col] == "W" :
                     return lig, col
 
-    def verifToucheValide(input) :
+    def _verifToucheValide(input) :
         if len(input) < 2 :
             verif = re.search("[0123456789ztZT]", input)
             if verif :
@@ -52,12 +92,12 @@ class ControlleurJeu :
         else :
             return False
         
-    def verifDeplacementValide(self, input, grille) :
+    def verifDeplacementValide(self, input) :
         valid = False
         posDoc = self._getPosDoc()
         ligTo = posDoc[0]
         colTo = posDoc[1]
-        if self.verifToucheValide(input) :
+        if self._verifToucheValide(input) :
             match str(input):
                 # move bas gauche
                 case "1": 
@@ -94,11 +134,11 @@ class ControlleurJeu :
                     colTo += 1
                 
             if ligTo > 0 and ligTo < 5 and colTo > 0 and colTo < 7 :
-                if grille[ligTo][colTo] != "X" :
-                    if grille[ligTo][colTo] == "D" :
+                if self.grille[ligTo][colTo] != "X" :
+                    if self.grille[ligTo][colTo] == "D" :
                         return -1 # code defaite
                     else :
-                        grille.setCellule(ligTo, colTo, "W")
+                        self.grille.setCellule(ligTo, colTo, "W")
                         return 1 # code tour bien deroule
             else :
                 VueJeu.errDeplacement()
@@ -116,5 +156,10 @@ class ControlleurJeu :
         else :
             return False
 
+    # def verifDefaite(self) :
+        
+
+
     def niveauSuivant(self) :
         self.niveau += 1
+
