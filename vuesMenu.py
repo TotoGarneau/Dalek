@@ -49,6 +49,7 @@ class VueHighScore :
 
                             Classement 
                             
+     Crédits cosmiques                       
             """)
         chiffres = [1,2,3,4,5,6,7,8,9,10]  #Afficher 1-10 selon nb de données dans fichier CSV 
         for i in chiffres:

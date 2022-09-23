@@ -30,6 +30,7 @@ class HighScoreController:
                 for i in liste :  
                     if (int(i) <= 10 and score > liste[int(i)]): 
                         HighScoreController.ecrireScore(self, score)
+                        break
 
 
     def ecrireScore(self, score):  #score du joueur passé en paramètre 
@@ -43,6 +44,7 @@ class HighScoreController:
         liste = []
         with open('fichierHighScore.csv', 'r') as csv_file:
                  for line in csv_file.readlines():
+                    print("en construction")
                   
 
 
