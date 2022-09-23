@@ -41,30 +41,53 @@ class ControlleurJeu :
                     self.grille[lig][col].setEtat("")
                     # Si dalek en bas a gauche 
                     if ligDoc > lig and colDoc > col :
-                        self.grille[ligTo + 1][colTo + 1].setEtat("D")
+                        ligTo += 1
+                        colTo += 1
+                        tour = self._verifDeplacementDalek(ligTo, colTo)
                     # si dalek en bas a droite
                     elif ligDoc > lig and colDoc < col :
-                        self.grille[ligTo + 1][colTo - 1].setEtat("D")
+                        ligTo += 1
+                        colTo -= 1
+                        tour = self._verifDeplacementDalek(ligTo, colTo)
                     # si dalek en haut a gauche
                     elif ligDoc < lig and colDoc < col :
-                        self.grille[ligTo - 1][colTo - 1].setEtat("D")
+                        ligTo -= 1
+                        colTo -= 1
+                        tour = self._verifDeplacementDalek(ligTo, colTo)
                     # si dalek en haut a droite
                     elif ligDoc < lig and colDoc > col :
-                        self.grille[ligTo - 1][colTo + 1].setEtat("D")
+                        ligTo -= 1
+                        colTo += 1
+                        tour = self._verifDeplacementDalek(ligTo, colTo)
                     # si dalek sur la meme ligne et a gauche
                     elif ligDoc == lig and colDoc > col :
-                        self.grille[ligTo][colTo + 1].setEtat("D")
+                        colTo += 1
+                        tour = self._verifDeplacementDalek(ligTo, colTo)
                     # si dalek sur la meme ligne et a droite
                     elif ligDoc == lig and colDoc < col :
-                        self.grille[ligTo][colTo - 1].setEtat("D")
+                        colTo -= 1
+                        tour = self._verifDeplacementDalek(ligTo, colTo)
                     # si dalek sur la meme colone et au dessus
                     elif ligDoc > lig and colDoc == col :
-                        self.grille[ligTo + 1][colTo].setEtat("D")
+                        ligTo += 1
+                        tour = self._verifDeplacementDalek(ligTo, colTo)
                     # si dalek sur la meme colone et en dessous
                     elif ligDoc < lig and colDoc == col :
-                        self.grille[ligTo - 1][colTo].setEtat("D")
-                
-                    
+                        ligTo -= 1
+                        tour = self._verifDeplacementDalek(ligTo, colTo)
+
+                if tour == -1 :
+                    return tour
+    
+    def _verifDeplacementDalek(self, lig, col) :
+        if self.grille.getCellule(lig, col) == "D" :
+            self.grille.setCellule(lig, col, "X")
+            return 1
+        elif self.grille.getCellule(lig, col) == "X" :
+            self.grille.setCellule(lig, col, "X")
+            return 1
+        elif self.grille.getCellule(lig, col) == "W" :
+            return -1
 
 
     def _initPosDoc(grille) :
@@ -156,7 +179,6 @@ class ControlleurJeu :
         else :
             return False
 
-    # def verifDefaite(self) :
         
 
 
