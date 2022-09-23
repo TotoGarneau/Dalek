@@ -42,16 +42,9 @@ class ControlleurJeu :
                 if grille[lig][col] == "W" :
                     return lig, col
 
-<<<<<<< Updated upstream
-
-    def verifToucheValide(input) :
-        if len(input) < 2 :
-            verif = re.search("[123456789zt]", input)
-=======
     def verifToucheValide(input) :
         if len(input) < 2 :
             verif = re.search("[0123456789ztZT]", input)
->>>>>>> Stashed changes
             if verif :
                 return True
             else :
@@ -83,11 +76,8 @@ class ControlleurJeu :
                 # no move
                 case "5":
                     pass
-<<<<<<< Updated upstream
-=======
                 case "0":
                     pass
->>>>>>> Stashed changes
                 # move droite
                 case "6" :
                     colTo += 1
@@ -105,11 +95,6 @@ class ControlleurJeu :
                 
             if ligTo > 0 and ligTo < 5 and colTo > 0 and colTo < 7 :
                 if grille[ligTo][colTo] != "X" :
-<<<<<<< Updated upstream
-                    grille.setCellule(ligTo, colTo, "W")
-            else :
-                print("Le deplacement est impossible, veuillez en essayer un autre.")
-=======
                     if grille[ligTo][colTo] == "D" :
                         return -1 # code defaite
                     else :
@@ -128,4 +113,3 @@ class ControlleurJeu :
 
 
          
->>>>>>> Stashed changes
