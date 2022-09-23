@@ -1,3 +1,5 @@
+from typing import final
+from xml.etree.ElementTree import tostring
 from vuesMenu import VueMenu, VueHighScore
 from os.path import exists
 
@@ -19,33 +21,30 @@ class ControllerMenu:
 
  
 class HighScoreController:
-    def calculClassement(self, score): 
-        if not exists('fichierHighScore.csv'):  
-            HighScoreController.ecrireScore(self, score)
-        else:
-            liste = []
-            with open('fichierHighScore.csv', 'r') as csv_file:
-                for line in csv_file.readlines():
-                    liste.append(line)
-                for i in liste :  
-                    if (int(i) <= 10 and score > liste[int(i)]): 
-                        HighScoreController.ecrireScore(self, score)
-                        break
-
-
+    def calculClassement(self, score):
+        HighScoreController.ecrireScore(self, score) #Écrire le score du joueur 
+        liste = []
+        listeHighScore = []
+        loopCount = 10
+        i = 1 
+        with open('fichierHighScore.csv', 'r') as csv_file: #Ouvrir le fichier et faire un tableau avec les 10 plus grandes valeurs
+            for line in csv_file.readlines():
+                liste.append(line)
+        liste = [int(item) for item in liste] #Convertir la liste de string en liste de int 
+        liste.sort(reverse=True)              #Classer du plus grand au plus petit 
+        while (i <= loopCount):
+            listeHighScore += [liste[i-1]] 
+            i+=1 
+        return listeHighScore
+        
     def ecrireScore(self, score):  #score du joueur passé en paramètre 
         score = [score]
         with open('fichierHighScore.csv', 'a', newline="") as csv_file:  #Ouvrir le fichier en "append" pour ajouter donnée
             writer = csv.writer(csv_file)               #Activer la fonction pour écrire 
             writer.writerows(map(lambda x: [x], score)) #Écrire le score 
 
-    def genererListeClassement(self):   #Trier les scores du plus grand au plus petit 
-        max = 0 
-        liste = []
-        with open('fichierHighScore.csv', 'r') as csv_file:
-                 for line in csv_file.readlines():
-                    print("en construction")
-                  
+
+            
 
 
 
@@ -55,24 +54,15 @@ class JeuController:
     def start(self, choix): #choix de niveau passé en paramètre 
         if choix == 1:
             print("Niveau Facile\n")
-            print ("\n" * 13)
-            input("appuyez sur une touche pour continuer")
-            score = 100; #Utiliser le score final du joueur et le passer en paramètre pour calcul high score
-            HighScoreController.calculClassement(self, score)
-            VueHighScore.afficherClassement()
-        elif choix == 2: 
+        elif choix == 2:
             print("Niveau Intermédiaire\n")
-            print ("\n" * 13)
-            input("appuyez sur une touche pour continuer")
-            score = 200; #Utiliser le score final du joueur et le passer en paramètre pour calcul high score
-            HighScoreController.calculClassement(self, score)
-            VueHighScore.afficherClassement()
         elif choix == 3: 
             print("Niveau Difficile\n")
-            print ("\n" * 13)
-            input("appuyez sur une touche pour continuer")
-            score = 300; #Utiliser le score final du joueur et le passer en paramètre pour calcul high score
-            HighScoreController.calculClassement(self,score)
-            VueHighScore.afficherClassement()
-
+        
+        score = 0
+        print ("\n" * 11)
+        input("appuyez sur une touche pour continuer")
+        tableauHS = HighScoreController.calculClassement(self, score)
+        VueHighScore.afficherClassement(self, tableauHS)
+       
         
