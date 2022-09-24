@@ -182,3 +182,36 @@ class ControlleurJeu :
     def niveauSuivant(self) :
         self.niveau += 1
 
+    def tourJeu(self) :
+        grille = self._getGrilleAffichage()
+        # affichage du niveau, de la grille et du nb de zapper disponnible
+        VueJeu.show(self.niveau, grille, 0)
+        # lire l'input du joueur
+        move = input()
+        tour = self.verifDeplacementValide(move)
+        # erreur input
+        if tour == 0 :
+            VueJeu.errDeplacement()
+            input("Pressez une touche pour continuer.")
+            return 0 
+        # Tour bien derouler
+        elif tour == 1 :
+            tour = self._deplacementDalek()
+        
+        return tour
+
+    def start(self) :
+        if self.tourJeu() == 1 :
+            win = self.verifVictoire()
+            if win :
+                self.niveauSuivant()
+                vueJeu.showNextLevel()
+                print()
+                input("Pressez une touche pour passer au niveau suivant.")
+        elif self.tourJeu == 0 :
+            self.start()
+        elif self.tourJeu() == -1 :
+            VueJeu.showGameOver()
+            print()
+            input("Pressez une touche pour revenir au menu.")
+            ControlleursMenu.choisirNiveau()
