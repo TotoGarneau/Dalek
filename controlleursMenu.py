@@ -19,19 +19,22 @@ class ControllerMenu:
  
 class HighScoreController:
     def calculClassement(self, score):
-        HighScoreController.ecrireScore(self, score) #Écrire le score du joueur 
         liste = []
         listeHighScore = []
-        loopCount = 10
-        i = 1 
-        with open('fichierHighScore.csv', 'r') as csv_file: #Ouvrir le fichier et faire un tableau avec les 10 plus grandes valeurs
+        i = 0 
+        topTen = 10
+
+        HighScoreController.ecrireScore(self, score) #Écrire le score du joueur dans le csv 
+       
+        with open('fichierHighScore.csv', 'r') as csv_file: #Ouvrir le csv et mettre les valeurs dans un tableau 
             for line in csv_file.readlines():
                 liste.append(line)
         liste = [int(item) for item in liste] #Convertir la liste de string en liste de int 
         liste.sort(reverse=True)              #Classer du plus grand au plus petit 
-        while (i <= loopCount):               #Mettre dans un tableau les 10 plus grandes valeurs
-            listeHighScore += [liste[i-1]] 
+        while (i < topTen): 
             i+=1 
+            if (len(liste) >= i):                              
+                listeHighScore += [liste[i-1]]   #Mettre dans un tableau les 10 plus grandes valeurs  
         return listeHighScore
         
     def ecrireScore(self, score): 

@@ -51,5 +51,7 @@ class VueHighScore :
                 print("\t", i+1," ", "-", "\t" * 2, tableauHS[i])
             else: 
                 print("\t", i+1,"", "-", "\t" * 2, tableauHS[i])
+        for i in range (10-len(tableauHS)):
+            print(" ")
         time.sleep(5.0)
-
+  
