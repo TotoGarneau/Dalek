@@ -1,7 +1,4 @@
-from typing import final
-from xml.etree.ElementTree import tostring
 from vuesMenu import VueMenu, VueHighScore
-from os.path import exists
 
 import time
 import csv 
@@ -32,24 +29,20 @@ class HighScoreController:
                 liste.append(line)
         liste = [int(item) for item in liste] #Convertir la liste de string en liste de int 
         liste.sort(reverse=True)              #Classer du plus grand au plus petit 
-        while (i <= loopCount):
+        while (i <= loopCount):               #Mettre dans un tableau les 10 plus grandes valeurs
             listeHighScore += [liste[i-1]] 
             i+=1 
         return listeHighScore
         
-    def ecrireScore(self, score):  #score du joueur passé en paramètre 
+    def ecrireScore(self, score): 
         score = [score]
         with open('fichierHighScore.csv', 'a', newline="") as csv_file:  #Ouvrir le fichier en "append" pour ajouter donnée
             writer = csv.writer(csv_file)               #Activer la fonction pour écrire 
             writer.writerows(map(lambda x: [x], score)) #Écrire le score 
 
 
-            
 
-
-
-# ** tester les contrôleurs jeu à partir des choix du menu  ** 
-# Le choix de niveau dans le menu principal est passé en paramètre dans la fonction start de JeuController 
+# ** tester les contrôleurs jeu à partir des choix du menu  **  
 class JeuController: 
     def start(self, choix): #choix de niveau passé en paramètre 
         if choix == 1:
@@ -59,10 +52,10 @@ class JeuController:
         elif choix == 3: 
             print("Niveau Difficile\n")
         
-        score = 0
+        score = 0         #Score du joueur sera dans la variable après sa partie 
         print ("\n" * 11)
         input("appuyez sur une touche pour continuer")
-        tableauHS = HighScoreController.calculClassement(self, score)
+        tableauHS = HighScoreController.calculClassement(self, score) #score passé en paramètre pour classement
         VueHighScore.afficherClassement(self, tableauHS)
        
         
