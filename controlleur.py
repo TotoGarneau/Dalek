@@ -11,6 +11,7 @@ class ControlleurJeu :
         self.grille = Grille()
         self._initPosDoc()
         self.posDalek = self._initPosDalek()
+        self.nbZapper = 1
         
     def _getGrilleAffichage(self) :
         grille = []
@@ -37,6 +38,55 @@ class ControlleurJeu :
             posDalek.append(dalek)
 
         return posDalek
+
+    def zappeurDoc(self) :
+        posDoc = self._getPosDoc()
+        ligDoc = posDoc[0]
+        colDoc = posDoc[1]
+        if self.nbZapper > 0 :
+            # utilisation d'un zapper
+            self.nbZapper -= 1
+            # Definition des lignes d'action du zapper
+            if ligDoc == 0 :
+                ligMinZap = 0
+                ligMaxZap = ligDoc + 2
+            elif ligDoc == 1 :
+                ligMinZap = ligDoc - 1
+                ligMaxZap = ligDoc + 2
+            elif ligDoc == 5 :
+                ligMinZap = ligDoc - 2
+                ligMaxZap = 5
+            elif ligDoc == 4 :
+                ligMinZap = ligDoc - 2
+                ligMaxZap = ligDoc + 1
+            else :
+                ligMinZap = ligDoc - 2
+                ligMaxZap = ligDoc + 2
+
+            if colDoc == 0 :
+                colMinZap = 0
+                colMaxZap = colDoc + 2
+            elif colDoc == 1 :
+                colMinZap = colDoc - 1
+                colMaxZap = colDoc + 2
+            elif colDoc == 7 :
+                colMinZap = colDoc - 2
+                colMaxZap = 7
+            elif colDoc == 6 :
+                colMinZap = colDoc - 2
+                colMaxZap = colDoc + 1
+            else :
+                colMinZap = colDoc - 2
+                colMaxZap = colDoc + 2
+
+            for y in range(ligMinZap, ligMaxZap + 1) :
+                for x in range(colMinZap, colMaxZap + 1) :
+                    if self.grille.getCellule(y, x) == 'D' :
+                        self.grille.setCellule(y, x, ' ')
+                        self.score += 5
+            
+            # re init des variable
+            ligMinZap = ligMaxZap = colMinZap = colMaxZap = 0
 
 
     # deplacement auto des dalek vers le doc
@@ -235,18 +285,22 @@ class ControlleurJeu :
     def tourJeu(self) :
         grille = self._getGrilleAffichage()
         # affichage du niveau, de la grille et du nb de zapper disponnible
-        VueJeu.show(self.niveau, grille, 0)
+        VueJeu.show(self.niveau, grille, self.nbZapper)
         
         # lire l'input du joueur
-        moveInput = input()
+        moveInput = input()        
+        if moveInput == 'z' or moveInput == 'Z':
+            self.zappeurDoc()
+            result = 1
+        else :
+            result = self.verifDeplacementValide(moveInput)        
+            if result == 1 :
+                input("Voir mouvement des daleks...")
+                result = self._deplacementDalek()
 
-        result = self.verifDeplacementValide(moveInput)
-        input("Voir mouvement des daleks...")
-        if result == 1 :
-            result = self._deplacementDalek()  
         grille = self._getGrilleAffichage()
         # affichage du niveau, de la grille et du nb de zapper disponnible
-        VueJeu.show(self.niveau, grille, 0)  
+        VueJeu.show(self.niveau, grille, self.nbZapper)  
 
         return result
 
