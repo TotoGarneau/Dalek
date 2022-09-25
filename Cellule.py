@@ -23,14 +23,14 @@ class Cellule:
         return "D"
 
     def setEtat(self, occupant) :         #Affectation du nouvel occupant d'une cellule
-    if occupant == "" :
-        self.etat = Cellule.cellNeutre()
-    elif occupant == "W" :
-        self.etat = Cellule.cellDoc()
-    elif occupant == "X" :
-        self.etat = Cellule.cellFeraille()
-    elif occupant == "D" :
-        self.etat = Cellule.cellDalek()
+        if occupant == " " :
+            self.etat = Cellule.cellNeutre()
+        elif occupant == "W" :
+            self.etat = Cellule.cellDoc()
+        elif occupant == "X" :
+            self.etat = Cellule.cellFeraille()
+        elif occupant == "D" :
+            self.etat = Cellule.cellDalek()
 
     def getEtat(self) :
         return self.etat
@@ -50,7 +50,7 @@ class Grille:
                 cellule.append(Cellule())
 
     def getCellule(self, ligne, colone) :
-        return self.grille[ligne][colone].getEtat()
+        return self.grille[ligne][colone]
 
     def setCellule(self, ligne, colone, occupant) :
-        self.grille[ligne][colone].setEtat(occupant)
+        self.grille[ligne][colone] = occupant
