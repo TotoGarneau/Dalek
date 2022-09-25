@@ -16,7 +16,7 @@ class VueJeu :
         print(bottom)
 
     def printLigneDamier(ligne, cellules) :
-        print("\t| " + cellules[ligne][0] + " | " + cellules[ligne][1] + " | "  + cellules[ligne][2] + " | " + cellules[ligne][3] + " | " + cellules[ligne][4] + " | " + cellules[ligne][5] + " | " + cellules[ligne][6] + " | " + cellules[ligne][7] + " |")
+        print("\t| " + str(cellules[ligne][0]) + " | " + str(cellules[ligne][1]) + " | "  + str(cellules[ligne][2]) + " | " + str(cellules[ligne][3]) + " | " + str(cellules[ligne][4]) + " | " + str(cellules[ligne][5]) + " | " + str(cellules[ligne][6]) + " | " + str(cellules[ligne][7]) + " |")
 
     def printDamier(cellules) :
         VueJeu.printTop()
@@ -32,6 +32,9 @@ class VueJeu :
         VueJeu.printLigneSeparation()
         VueJeu.printLigneDamier(5, cellules)
         VueJeu.printBottom()
+
+    def errDeplacement() :
+        print("Le deplacement est impossible, veuillez en essayer un autre.")
 
     def showGameOver() :
         topBoite = "\t\t|"
