@@ -142,19 +142,31 @@ class ControlleurJeu :
         if re.search("[0-9ztZT]", input) :
             match input:  
                 # move bas gauche  
-                case '1': 
-                    ligTo += 1
-                    colTo -= 1
+                case '1':
+                    if ligTo < 5 and colTo > 0 : 
+                        ligTo += 1
+                        colTo -= 1
+                    else :
+                        return 0
                 # move bas
                 case '2':
-                    ligTo += 1
+                    if ligTo < 5 :
+                        ligTo += 1
+                    else :
+                        return 0
                 # move bas droite
                 case '3' :
-                    ligTo += 1
-                    colTo +=1
+                    if ligTo < 5 and colTo < 7 :
+                        ligTo += 1
+                        colTo += 1
+                    else :
+                        return 0
                 # move gauche
                 case '4': 
-                    colTo -= 1
+                    if colTo > 0 :
+                        colTo -= 1
+                    else :
+                        return 0
                 # no move
                 case '5':
                     pass
@@ -162,18 +174,30 @@ class ControlleurJeu :
                     pass
                 # move droite
                 case '6' :
-                    colTo += 1
+                    if colTo < 7 :
+                        colTo += 1
+                    else :
+                        return 0
                 # move haut gauche
                 case '7':
-                    ligTo -= 1
-                    colTo -= 1
+                    if ligTo > 0 and colTo > 0 :
+                        ligTo -= 1
+                        colTo -= 1
+                    else :
+                        return 0
                 # move haut
                 case '8':
-                    ligTo -= 1
+                    if ligTo > 0 :
+                        ligTo -= 1
+                    else :
+                        return 0
                 # move haut droite
                 case '9':
-                    ligTo -= 1
-                    colTo += 1
+                    if ligTo > 0 and colTo < 7 :
+                        ligTo -= 1
+                        colTo += 1
+                    else : 
+                        return 0
         
         cell = self.grille.getCellule(ligTo, colTo)
         
