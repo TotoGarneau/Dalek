@@ -13,6 +13,14 @@ class ControlleurJeu :
         self.posDalek = self._initPosDalek()
         self.nbZapper = 1
         
+    def _reInit(self) :
+        self.niveau = 1
+        self.grille = Grille()
+        self._initPosDoc()
+        self.posDalek = self._initPosDalek()
+        self.score = 0
+        self.nbZapper = 1
+
     def _getGrilleAffichage(self) :
         grille = []
         for ligne in range(0, 6) :
@@ -323,10 +331,7 @@ class ControlleurJeu :
         elif choix == -1 :
             VueJeu.showGameOver()
             # re init si prochaine partie
-            self.grille = Grille()
-            self._initPosDoc()
-            self._initPosDalek()
-            print()
+            self._reInit()
             input("Pressez une touche pour revenir au menu.")
             ControllerMenu.choisirNiveau(self)
 
