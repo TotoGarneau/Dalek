@@ -1,5 +1,6 @@
 import re
 from secrets import randbelow
+from site import abs_paths
 from Cellule import Cellule, Grille
 from controlleursMenu import ControllerMenu
 from VueJeu import VueJeu
@@ -9,21 +10,21 @@ import random
 class ControlleurJeu :
 
     def usageTeleporteur(self):
-        self._deplacementDalek()
-        #breakpoint()
         posDocteur = self._getPosDoc() 
         l = posDocteur[0]
         c = posDocteur[1]
+        breakpoint() 
         while self.grille.getCellule(l, c) == "W":  
             y = random.randrange(0, 6)
             x = random.randrange(0, 8)  
             for i in range(0, self.niveau * 5) :  #vérifier la position de chaque dalek 
+                self._deplacementDalek()          #obtenir les coordonnées x y du prochain déplacement des daleks
                 ligne = self.posDalek[i][0]
                 colonne = self.posDalek[i][1]
-                if ( y - abs(ligne) >= 3)   or ( x - (abs(colonne)) >= 3): #Si case d'atterissage est 2 cases d'écart des daleks 
-                        if (y != l and x != c) : 
+                if( abs( (y - ligne) >= 3)   or  abs( (x - colonne) >= 3) ): #Si case d'atterissage est 2 cases d'écart ou plus des daleks 
+                        if (y != l and x != c) :                            # Si la case d'atterissage n'est pas la position actuelle
                             if self.grille.getCellule(y, x) != "W" and self.grille.getCellule(y, x) != "D" and self.grille.getCellule(y, x) != "X" :         
-                                self.grille.setCellule(y, x, "W")
+                                self.grille.setCellule(y, x, "W") #déplacer le docteur 
                                 self.grille.setCellule(l, c, " ") 
         
        
