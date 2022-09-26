@@ -151,11 +151,11 @@ class ControlleurJeu :
     
     def _verifDeplacementDalek(self, lig, col) :
         if self.grille.getCellule(lig, col) == "D" :
-            nbCreditsCosmiques += 1
+            self.nbCreditsCosmiques += 1
             self.grille.setCellule(lig, col, "X")
             return 1
         elif self.grille.getCellule(lig, col) == "X" :
-            nbCreditsCosmiques += 1
+            self.nbCreditsCosmiques += 1
             self.grille.setCellule(lig, col, "X")
             return 1
         elif self.grille.getCellule(lig, col) == "W" :
