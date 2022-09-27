@@ -23,6 +23,14 @@ class ControllerMenu:
         else : 
             print("Choix invalide, veuillez recommencer")
 
+    def choisirTailleGrille(self) :
+        VueMenu.afficherTaille()
+        taille = []
+        taille.append(input())
+        taille.append(input())
+
+        return taille
+
 class HighScoreController:
     def calculClassement(self, score):
         HighScoreController.ecrireScore(self, score) #Écrire le score du joueur 
@@ -47,9 +55,11 @@ class HighScoreController:
             writer.writerows(map(lambda x: [x], score)) #Écrire le score 
 
 class ControlleurJeu :
-    def __init__(self) :
+    def __init__(self, ligne, colonne) :
+        self.nbLigne = ligne
+        self.nbColonne = colonne
         self.niveau = 1
-        self.grille = Grille()
+        self.grille = Grille(ligne, colonne)
         self._initPosDoc()
         self.posDalek = self._initPosDalek()
         self.score = 0
@@ -57,18 +67,24 @@ class ControlleurJeu :
 
     def _reInit(self) :
         self.niveau = 1
-        self.grille = Grille()
+        self.grille = Grille(self.nbLigne, self.nbColonne)
         self._initPosDoc()
         self.posDalek = self._initPosDalek()
         self.score = 0
         self.nbZapper = 1
 
+    def tailleGrille(self) :
+        taille = []
+        taille.append(self.nbLigne)
+        taille.append(self.nbColonne)
+        return taille
+
     def _getGrilleAffichage(self) :
         grille = []
-        for ligne in range(0, 6) :
+        for ligne in range(0, self.nbLigne) :
             cellule = []
             grille.append(cellule)
-            for colone in range(0, 8) :
+            for colone in range(0, self.nbColonne) :
                 cellule.append(self.grille.getCellule(ligne, colone))
         return grille
 
@@ -77,8 +93,8 @@ class ControlleurJeu :
         nbDalekSet = 0
         posDalek = []
         while nbDalekSet != nbDalek :
-            y = random.randrange(0, 6)
-            x = random.randrange(0, 8)         
+            y = random.randrange(0, self.nbLigne)
+            x = random.randrange(0, self.nbColonne)         
             if self.grille.getCellule(y, x) != "W" and self.grille.getCellule(y, x) != "D" :
                 self.grille.setCellule(y, x, "D")
                 nbDalekSet += 1
@@ -162,13 +178,13 @@ class ControlleurJeu :
             return 1
        
     def _initPosDoc(self) :
-            y = random.randrange(0, 6)
-            x = random.randrange(0, 8)
+            y = random.randrange(0, self.nbLigne)
+            x = random.randrange(0, self.nbColonne)
             self.grille.setCellule(y, x, "W")
     
     def _getPosDoc(self) :
-        for lig in range(0, 6) :
-            for col in range(0, 8) :
+        for lig in range(0, self.nbLigne) :
+            for col in range(0, self.nbColonne) :
                 if self.grille.getCellule(lig, col) == "W" :
                     return lig, col
 
@@ -191,20 +207,20 @@ class ControlleurJeu :
             match input:  
                 # move bas gauche  
                 case '1':
-                    if ligTo < 5 and colTo > 0 : 
+                    if ligTo < self.nbLigne - 1 and colTo > 0 : 
                         ligTo += 1
                         colTo -= 1
                     else :
                         return 0
                 # move bas
                 case '2':
-                    if ligTo < 5 :
+                    if ligTo < self.nbLigne - 1 :
                         ligTo += 1
                     else :
                         return 0
                 # move bas droite
                 case '3' :
-                    if ligTo < 5 and colTo < 7 :
+                    if ligTo < self.nbLigne - 1 and colTo < self.nbColonne - 1 :
                         ligTo += 1
                         colTo += 1
                     else :
@@ -222,7 +238,7 @@ class ControlleurJeu :
                     pass
                 # move droite
                 case '6' :
-                    if colTo < 7 :
+                    if colTo < self.nbColonne - 1 :
                         colTo += 1
                     else :
                         return 0
@@ -241,7 +257,7 @@ class ControlleurJeu :
                         return 0
                 # move haut droite
                 case '9':
-                    if ligTo > 0 and colTo < 7 :
+                    if ligTo > 0 and colTo < self.nbColonne - 1 :
                         ligTo -= 1
                         colTo += 1
                     else : 
@@ -318,8 +334,8 @@ class ControlleurJeu :
 
     def verifVictoire(self) :
         nbDalek = 0
-        for y in range(0, 6) :
-            for x in range(0, 8) :
+        for y in range(0, self.nbLigne) :
+            for x in range(0, self.nbColonne) :
                 if self.grille.getCellule(y, x) == "D" :
                     nbDalek += 1
         
@@ -334,7 +350,7 @@ class ControlleurJeu :
     def tourJeu(self) :
         grille = self._getGrilleAffichage()
         # affichage du niveau, de la grille et du nb de zapper disponnible
-        VueJeu.show(self.niveau, grille, self.nbZapper)
+        VueJeu.show(self.niveau, grille, self.nbLigne, self.nbColonne, self.nbZapper, self.score)
         
         # lire l'input du joueur
         moveInput = input()        
@@ -349,7 +365,7 @@ class ControlleurJeu :
 
         grille = self._getGrilleAffichage()
         # affichage du niveau, de la grille et du nb de zapper disponnible
-        VueJeu.show(self.niveau, grille, self.nbZapper)  
+        VueJeu.show(self.niveau, grille, self.nbLigne, self.nbColonne, self.nbZapper, self.score)
 
         return result
 
@@ -362,7 +378,7 @@ class ControlleurJeu :
                 VueJeu.showNextLevel(self.niveau)
                 print()
                 input("Pressez une touche pour passer au niveau suivant.")
-                self.grille = Grille()
+                self.grille = Grille(self.nbLigne, self.nbColonne)
                 self._initPosDoc()
                 self.posDalek = []
                 self.posDalek = self._initPosDalek()

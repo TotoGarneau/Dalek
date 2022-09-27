@@ -16,6 +16,17 @@ class VueMenu :
     3 - Difficile
     4 - Quitter     
             """)
+    
+    def afficherTaille() :
+        print("""
+
+    Choisissez la taille de votre terrain !
+                                                                --------------------
+        Entrez le nombre de ligne, confirmez avec Enter,        | Min lignes   : 6 |       
+        puis le nombre de colonnes et confirmez a nouveau       | Min colonnes : 8 |
+                                                                --------------------
+        
+        """)
 
     @staticmethod
     def afficherAuRevoir() :
@@ -54,38 +65,47 @@ class VueHighScore :
 
 class VueJeu : 
     @staticmethod
-    def printTop() :
-        print("\t_________________________________")
+    def printTop(nbCol) :
+        ligneTop = "\t_"
+        for x in range(0,nbCol) :
+            ligneTop += "___"
+        ligneTop += "_"
+        print(ligneTop)
 
-    def printLigneVide() :
-        print("\t|   |   |   |   |   |   |   |   |")
+    def printLigneVide(nbCol) :
+        ligneVide = "\t| "
+        for x in range(0, nbCol) :
+            ligneVide += "  |  "
+        print(ligneVide)
 
-    def printLigneSeparation() :
-        print("\t|---|---|---|---|---|---|---|---|")
+    def printLigneSeparation(nbCol) :
+        ligneSep = "\t|"
+        for x in range(0, nbCol) :
+            ligneSep += "---|"
+        print(ligneSep)
 
-    def printBottom() :
-        bottom = "\t"
-        for x in range(0, 33) :
-            bottom += "\u203e"  # char upperscore
+    def printBottom(nbCol) :
+        bottom = "\t\u203e"
+        for x in range(0, nbCol) :
+            bottom += "\u203e\u203e\u203e"  # char upperscore
+        bottom += "\u203e"
         print(bottom)
 
-    def printLigneDamier(ligne, cellules) :
-        print("\t| " + str(cellules[ligne][0]) + " | " + str(cellules[ligne][1]) + " | "  + str(cellules[ligne][2]) + " | " + str(cellules[ligne][3]) + " | " + str(cellules[ligne][4]) + " | " + str(cellules[ligne][5]) + " | " + str(cellules[ligne][6]) + " | " + str(cellules[ligne][7]) + " |")
+    def printLigneDamier(ligne, nbCol, cellules) :
+        ligneDamier = "\t| "
+        for x in range(0, nbCol) :
+            ligneDamier += str(cellules[ligne][x])
+            ligneDamier += " | "
+        print(ligneDamier)
 
-    def printDamier(cellules) :
-        VueJeu.printTop()
-        VueJeu.printLigneDamier(0, cellules)
-        VueJeu.printLigneSeparation()
-        VueJeu.printLigneDamier(1, cellules)
-        VueJeu.printLigneSeparation()
-        VueJeu.printLigneDamier(2, cellules)
-        VueJeu.printLigneSeparation()
-        VueJeu.printLigneDamier(3, cellules)
-        VueJeu.printLigneSeparation()
-        VueJeu.printLigneDamier(4, cellules)
-        VueJeu.printLigneSeparation()
-        VueJeu.printLigneDamier(5, cellules)
-        VueJeu.printBottom()
+    def printDamier(cellules, nbLig, nbCol) :
+        VueJeu.printTop(nbCol)        
+        for y in range(0, nbLig) :
+            VueJeu.printLigneDamier(y, nbCol, cellules)
+            if y < nbLig - 1  :
+                VueJeu.printLigneSeparation(nbCol)
+        VueJeu.printBottom(nbCol)
+
 
     def errDeplacement() :
         print("Le deplacement est impossible, veuillez en essayer un autre.")
@@ -111,9 +131,9 @@ class VueJeu :
         print("\t\t|  NEXT LEVEL " + str(niveau) +" |")
         print("\t\t|________________|")
 
-    def show(niveau, grille, nbZapper) :
-        print("\tNiveau : 0" + str(niveau) + "\t Zapper : " + str(nbZapper))
+    def show(niveau, grille,nbLig, nbCol, nbZapper, score) :
+        print("\tNiveau : 0" + str(niveau) + "\tZapper : " + str(nbZapper) + "\tCredits : " + str(score))
         print()
-        VueJeu.printDamier(grille)
+        VueJeu.printDamier(grille, nbLig, nbCol)
         print()
         print("\tChoisissez un deplacement...")

@@ -39,13 +39,13 @@ class Cellule :
         return self.etat
 
 class Grille :
-    def __init__(self) :
+    def __init__(self,ligne, colonne) :
         self.grille = []
 
-        for ligne in range(0, 6) :
+        for y in range(0, ligne) :
             cellule = []
             self.grille.append(cellule)
-            for colone in range(0, 8) :
+            for x in range(0, colonne) :
                 cellule.append(Cellule())
 
     def getCellule(self, ligne, colone) :
