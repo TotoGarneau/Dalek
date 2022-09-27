@@ -179,7 +179,7 @@ class ControlleurJeu :
     def _verifToucheValide(self, input) :
         if len(input) < 2 :
             # input = str(input)
-            if re.search("[0-9ztZT]", input) :
+            if re.search("[0-9ztZT/s]", input) :
                 return True
             else :
                 return False
@@ -191,7 +191,7 @@ class ControlleurJeu :
         ligTo = posDoc[0]
         colTo = posDoc[1]
 
-        if re.search("[0-9ztZT]", input) :
+        if re.search("[0-9ztZT/s]", input) :
             match input:  
                 # move bas gauche  
                 case '1':
@@ -320,6 +320,20 @@ class ControlleurJeu :
             # re init des variable
             ligMinZap = ligMaxZap = colMinZap = colMaxZap = 0
 
+    def usageTeleporteur(self):
+        posDocteur = self._getPosDoc() 
+        l = posDocteur[0]
+        c = posDocteur[1]
+        while self.grille.getCellule(l, c) == "W":  
+            y = random.randrange(0, 6)
+            x = random.randrange(0, 8)  
+            for i in range(0, self.niveau * 5) : 
+                if (y != l and x != c) :         # Si la case d'atterissage n'est pas la position actuelle
+                    if self.grille.getCellule(y, x) != "W" and self.grille.getCellule(y, x) != "D" and self.grille.getCellule(y, x) != "X" :         
+                        self.grille.setCellule(y, x, "W") #déplacer le docteur 
+                        self.grille.setCellule(l, c, " ") 
+
+
     def verifVictoire(self) :
         nbDalek = 0
         for y in range(0, 6) :
@@ -345,6 +359,9 @@ class ControlleurJeu :
         if moveInput == 'z' or moveInput == 'Z':
             self.zappeurDoc()
             result = 1
+        elif moveInput == ' ':
+            self.usageTeleporteur()
+            result = 1 
         else :
             result = self.verifDeplacementValide(moveInput)        
             if result == 1 :
