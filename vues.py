@@ -21,10 +21,10 @@ class VueMenu :
         print("""
 
     Choisissez la taille de votre terrain !
-                                                                --------------------
-        Entrez le nombre de ligne, confirmez avec Enter,        | Min lignes   : 6 |       
-        puis le nombre de colonnes et confirmez a nouveau       | Min colonnes : 8 |
-                                                                --------------------
+                                                                
+        Entrez le nombre de ligne, confirmez avec Enter,             
+        puis le nombre de colonnes et confirmez a nouveau       
+                                                                
         
         """)
 
@@ -67,8 +67,8 @@ class VueJeu :
     @staticmethod
     def printTop(nbCol) :
         ligneTop = "\t_"
-        for x in range(0,nbCol) :
-            ligneTop += "___"
+        for x in range(0, nbCol) :
+            ligneTop += "____"
         ligneTop += "_"
         print(ligneTop)
 
@@ -87,7 +87,7 @@ class VueJeu :
     def printBottom(nbCol) :
         bottom = "\t\u203e"
         for x in range(0, nbCol) :
-            bottom += "\u203e\u203e\u203e"  # char upperscore
+            bottom += "\u203e\u203e\u203e\u203e"  # char upperscore
         bottom += "\u203e"
         print(bottom)
 
