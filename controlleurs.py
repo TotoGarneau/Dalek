@@ -55,7 +55,7 @@ class HighScoreController:
             writer.writerows(map(lambda x: [x], score)) #Écrire le score 
 
 class ControlleurJeu :
-    def __init__(self, ligne, colonne) :
+    def __init__(self, choixDiff, ligne, colonne) :
         self.nbLigne = ligne
         self.nbColonne = colonne
         self.niveau = 1
@@ -65,6 +65,7 @@ class ControlleurJeu :
         self.score = 0
         self.nbCreditsCosmiques = 0
         self.nbZapper = 1
+        self.difficulte = choixDiff
 
     def _reInit(self) :
         self.niveau = 1
@@ -345,9 +346,15 @@ class ControlleurJeu :
             x = random.randrange(0, self.nbColonne)  
             for i in range(0, self.niveau * 5) : 
                 if (y != l and x != c) :         # Si la case d'atterissage n'est pas la position actuelle
-                    if self.grille.getCellule(y, x) != "W" and self.grille.getCellule(y, x) != "X" :         
+                    if self.grille.getCellule(y, x) != "W" and self.grille.getCellule(y, x) != "X" :
+                        if self.grille.getCellule(y, x) == 'D' :
+                            return -1         
                         self.grille.setCellule(y, x, "W") #déplacer le docteur 
-                        self.grille.setCellule(l, c, " ") 
+                        self.grille.setCellule(l, c, " ")
+                        
+        return 1
+
+         
 
     def usageTeleporteurNiv2(self):
         posDocteur = self._getPosDoc() 
@@ -361,6 +368,7 @@ class ControlleurJeu :
                     if self.grille.getCellule(y, x) != "W" and self.grille.getCellule(y, x) != "D" and self.grille.getCellule(y, x) != "X" :         
                         self.grille.setCellule(y, x, "W") #déplacer le docteur 
                         self.grille.setCellule(l, c, " ") 
+        return 1
 
     def usageTeleporteurNiv1(self): 
         posDocteur = self._getPosDoc() 
@@ -369,7 +377,6 @@ class ControlleurJeu :
         x = 0 
         y = 0 
         tour = 0 
-        self._deplacementDalek() 
         bonDeplacement = 0  
         while bonDeplacement < 5:  
             bonDeplacement = 0 
@@ -384,7 +391,8 @@ class ControlleurJeu :
                                 bonDeplacement += 1
         if bonDeplacement >= 5  :           
             self.grille.setCellule(y, x, "W") #déplacer le docteur 
-            self.grille.setCellule(l, c, " ")                            
+            self.grille.setCellule(l, c, " ")
+        return 1                            
 
 
 
@@ -414,8 +422,14 @@ class ControlleurJeu :
             self.zappeurDoc()
             result = 1
         elif moveInput == ' ':
-            self.usageTeleporteurNiv1()
-            result = 1 
+            if self.difficulte == 1 :
+                result = self.usageTeleporteurNiv1()
+            elif self.difficulte == 2 :
+                result = self.usageTeleporteurNiv2()
+            else :
+                result = self.usageTeleporteurNiv3()
+            input("Voir mouvement des daleks...")
+            result = self._deplacementDalek()          
         else :
             result = self.verifDeplacementValide(moveInput)        
             if result == 1 :
@@ -429,8 +443,8 @@ class ControlleurJeu :
         return result
 
     def start(self) :
-        choix = self.tourJeu()
-        if choix == 1 :
+        state = self.tourJeu()
+        if state == 1 :
             win = self.verifVictoire()
             if win :
                 self.niveauSuivant()
@@ -442,11 +456,11 @@ class ControlleurJeu :
                 self.posDalek = []
                 self.posDalek = self._initPosDalek()
                 self.nbZapper += 1
-        elif choix == 0 :
+        elif state == 0 :
             VueJeu.errDeplacement()
             input()
             self.start()
-        elif choix == -1 :
+        elif state == -1 :
             VueJeu.showGameOver()
             # re init si prochaine partie
             self._reInit()
