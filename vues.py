@@ -1,4 +1,5 @@
 import time
+import 
 
 class VueMenu : 
     @staticmethod
@@ -37,13 +38,13 @@ class VueMenu :
 
 class VueHighScore : 
     @staticmethod
-    def afficherClassement(self, tableauHS, creditsCosmiques): 
+    def afficherClassement(self, tableauHS): 
         
         print(""" 
     Jeu des Daleks 
                             Classement 
 
-     Crédits cosmiques """)creditsCosmiques
+     Crédits cosmiques """)self.creditsCosmiques
                              #Afficher 1-10 selon nb de données dans fichier CSV 
         for i in range(len(tableauHS)):
             if (i < len(tableauHS)-1):
