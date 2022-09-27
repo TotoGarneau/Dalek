@@ -341,8 +341,8 @@ class ControlleurJeu :
         l = posDocteur[0]
         c = posDocteur[1]
         while self.grille.getCellule(l, c) == "W":  #Tant que le docteur est à sa position actuelle
-            y = random.randrange(0, 6)  # Generer une nouvelle position aléatoire 
-            x = random.randrange(0, 8)  
+            y = random.randrange(0, self.nbLigne)  # Generer une nouvelle position aléatoire 
+            x = random.randrange(0, self.nbColonne)  
             for i in range(0, self.niveau * 5) : 
                 if (y != l and x != c) :         # Si la case d'atterissage n'est pas la position actuelle
                     if self.grille.getCellule(y, x) != "W" and self.grille.getCellule(y, x) != "X" :         
@@ -354,8 +354,8 @@ class ControlleurJeu :
         l = posDocteur[0]
         c = posDocteur[1]
         while self.grille.getCellule(l, c) == "W":  #Tant que le docteur est à sa position actuelle
-            y = random.randrange(0, 6)  # Generer une nouvelle position aléatoire 
-            x = random.randrange(0, 8)  
+            y = random.randrange(0, self.nbLigne)  # Generer une nouvelle position aléatoire 
+            x = random.randrange(0, self.nbColonne)  
             for i in range(0, self.niveau * 5) : 
                 if (y != l and x != c) :         # Si la case d'atterissage n'est pas la position actuelle
                     if self.grille.getCellule(y, x) != "W" and self.grille.getCellule(y, x) != "D" and self.grille.getCellule(y, x) != "X" :         
@@ -373,8 +373,8 @@ class ControlleurJeu :
         bonDeplacement = 0  
         while bonDeplacement < 5:  
             bonDeplacement = 0 
-            y = random.randrange(0, 6)
-            x = random.randrange(0, 8) 
+            y = random.randrange(0, self.nbLigne)
+            x = random.randrange(0, self.nbColonne) 
             for i in range(0, self.niveau * 5) :  #vérifier la position de chaque dalek au prochain déplacement
                 ligne = self.posDalek[i][0]       #obtenir les coordonnées x y du prochain déplacement des daleks
                 colonne = self.posDalek[i][1]
