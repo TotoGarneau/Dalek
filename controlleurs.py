@@ -63,6 +63,7 @@ class ControlleurJeu :
         self._initPosDoc()
         self.posDalek = self._initPosDalek()
         self.score = 0
+        self.nbCreditsCosmiques = 0
         self.nbZapper = 1
 
     def _reInit(self) :
@@ -71,6 +72,7 @@ class ControlleurJeu :
         self._initPosDoc()
         self.posDalek = self._initPosDalek()
         self.score = 0
+        self.nbCreditsCosmiques = 0
         self.nbZapper = 1
 
     def tailleGrille(self) :
@@ -165,9 +167,11 @@ class ControlleurJeu :
     
     def _verifDeplacementDalek(self, lig, col) :
         if self.grille.getCellule(lig, col) == "D" :
+            self.nbCreditsCosmiques += 1
             self.grille.setCellule(lig, col, "X")
             return 1
         elif self.grille.getCellule(lig, col) == "X" :
+            self.nbCreditsCosmiques += 1
             self.grille.setCellule(lig, col, "X")
             return 1
         elif self.grille.getCellule(lig, col) == "W" :
@@ -191,7 +195,7 @@ class ControlleurJeu :
     def _verifToucheValide(self, input) :
         if len(input) < 2 :
             # input = str(input)
-            if re.search("[0-9ztZT]", input) :
+            if re.search("[0-9ztZT/s]", input) :
                 return True
             else :
                 return False
@@ -203,7 +207,7 @@ class ControlleurJeu :
         ligTo = posDoc[0]
         colTo = posDoc[1]
 
-        if re.search("[0-9ztZT]", input) :
+        if re.search("[0-9ztZT/s]", input) :
             match input:  
                 # move bas gauche  
                 case '1':
@@ -332,6 +336,58 @@ class ControlleurJeu :
             # re init des variable
             ligMinZap = ligMaxZap = colMinZap = colMaxZap = 0
 
+    def usageTeleporteurNiv3(self):
+        posDocteur = self._getPosDoc() 
+        l = posDocteur[0]
+        c = posDocteur[1]
+        while self.grille.getCellule(l, c) == "W":  #Tant que le docteur est à sa position actuelle
+            y = random.randrange(0, 6)  # Generer une nouvelle position aléatoire 
+            x = random.randrange(0, 8)  
+            for i in range(0, self.niveau * 5) : 
+                if (y != l and x != c) :         # Si la case d'atterissage n'est pas la position actuelle
+                    if self.grille.getCellule(y, x) != "W" and self.grille.getCellule(y, x) != "X" :         
+                        self.grille.setCellule(y, x, "W") #déplacer le docteur 
+                        self.grille.setCellule(l, c, " ") 
+
+    def usageTeleporteurNiv2(self):
+        posDocteur = self._getPosDoc() 
+        l = posDocteur[0]
+        c = posDocteur[1]
+        while self.grille.getCellule(l, c) == "W":  #Tant que le docteur est à sa position actuelle
+            y = random.randrange(0, 6)  # Generer une nouvelle position aléatoire 
+            x = random.randrange(0, 8)  
+            for i in range(0, self.niveau * 5) : 
+                if (y != l and x != c) :         # Si la case d'atterissage n'est pas la position actuelle
+                    if self.grille.getCellule(y, x) != "W" and self.grille.getCellule(y, x) != "D" and self.grille.getCellule(y, x) != "X" :         
+                        self.grille.setCellule(y, x, "W") #déplacer le docteur 
+                        self.grille.setCellule(l, c, " ") 
+
+    def usageTeleporteurNiv1(self): 
+        posDocteur = self._getPosDoc() 
+        l = posDocteur[0]
+        c = posDocteur[1] 
+        x = 0 
+        y = 0 
+        tour = 0 
+        self._deplacementDalek() 
+        bonDeplacement = 0  
+        while bonDeplacement < 5:  
+            bonDeplacement = 0 
+            y = random.randrange(0, 6)
+            x = random.randrange(0, 8) 
+            for i in range(0, self.niveau * 5) :  #vérifier la position de chaque dalek au prochain déplacement
+                ligne = self.posDalek[i][0]       #obtenir les coordonnées x y du prochain déplacement des daleks
+                colonne = self.posDalek[i][1]
+                if( abs(y - ligne) > 2)   or  ( abs(x - colonne) > 2 ): #Si case d'atterissage est 2 cases d'écart ou plus des daleks 
+                    if (y != l and x != c) :                            # Si la case d'atterissage n'est pas la position actuelle
+                        if self.grille.getCellule(y, x) != "W" and self.grille.getCellule(y, x) != "D" and self.grille.getCellule(y, x) != "X" :  
+                                bonDeplacement += 1
+        if bonDeplacement >= 5  :           
+            self.grille.setCellule(y, x, "W") #déplacer le docteur 
+            self.grille.setCellule(l, c, " ")                            
+
+
+
     def verifVictoire(self) :
         nbDalek = 0
         for y in range(0, self.nbLigne) :
@@ -357,6 +413,9 @@ class ControlleurJeu :
         if moveInput == 'z' or moveInput == 'Z':
             self.zappeurDoc()
             result = 1
+        elif moveInput == ' ':
+            self.usageTeleporteurNiv1()
+            result = 1 
         else :
             result = self.verifDeplacementValide(moveInput)        
             if result == 1 :

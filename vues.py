@@ -54,7 +54,7 @@ class VueHighScore :
     Jeu des Daleks 
                             Classement 
 
-     Crédits cosmiques                       """)
+     Crédits cosmiques """)#self.creditsCosmiques
                              #Afficher 1-10 selon nb de données dans fichier CSV 
         for i in range(len(tableauHS)):
             if (i < len(tableauHS)-1):
